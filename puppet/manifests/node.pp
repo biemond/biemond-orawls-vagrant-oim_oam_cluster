@@ -180,21 +180,21 @@ class fmw{
 }
 
 class opatch{
-  require fmw,bsu,orawls::weblogic
+  require fmw
   $default_params = {}
   $opatch_instances = hiera('opatch_instances', {})
   create_resources('orawls::opatch',$opatch_instances, $default_params)
 }
 
 class copydomain {
-  require orawls::weblogic, bsu
+  require opatch
   $default_params = {}
   $copy_instances = hiera('copy_instances', {})
   create_resources('orawls::copydomain',$copy_instances, $default_params)
 }
 
 class nodemanager {
-  require orawls::weblogic, bsu, copydomain
+  require copydomain
   $default_params = {}
   $nodemanager_instances = hiera('nodemanager_instances', {})
   create_resources('orawls::nodemanager',$nodemanager_instances, $default_params)

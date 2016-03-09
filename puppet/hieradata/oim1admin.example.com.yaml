@@ -167,7 +167,7 @@ server_vm_args_max_memory:     &server_vm_args_max_memory      '-Xmx1024m'
 server_vm_permsize:            &server_vm_permsize             '-XX:PermSize=512m -XX:MaxPermSize=512m'
 tangosol:                      &tangosol                       '-Dtangosol.coherence.wka1=oimnode1.example.com -Dtangosol.coherence.wka2=oimnode2.example.com -Dtangosol.coherence.localport=8089 -Dtangosol.coherence.wka1.port=8089 -Dtangosol.coherence.wka2.port=8089'
 
-managed_servers_instances:
+server_instances:
   'SoaServer1':
      ensure:                         'present'
      arguments:
@@ -185,6 +185,8 @@ managed_servers_instances:
      sslenabled:                     '1'
      ssllistenport:                  '8002'
      sslhostnameverificationignored: '1'
+     require:
+        - Wls_machine[Node1]
   'SoaServer2':
      ensure:                         'present'
      arguments:
@@ -202,6 +204,8 @@ managed_servers_instances:
      sslenabled:                     '1'
      ssllistenport:                  '8002'
      sslhostnameverificationignored: '1'
+     require:
+        - Wls_machine[Node2]
   'OimServer1':
      ensure:                         'present'
      arguments:
@@ -217,6 +221,8 @@ managed_servers_instances:
      sslenabled:                     '1'
      ssllistenport:                  '14001'
      sslhostnameverificationignored: '1'
+     require:
+        - Wls_machine[Node1]
   'OimServer2':
      ensure:                         'present'
      arguments:
@@ -232,6 +238,8 @@ managed_servers_instances:
      sslenabled:                     '1'
      ssllistenport:                  '14001'
      sslhostnameverificationignored: '1'
+     require:
+        - Wls_machine[Node2]
   'OamServer1':
      ensure:                         'present'
      arguments:
@@ -248,6 +256,8 @@ managed_servers_instances:
      sslenabled:                     '1'
      ssllistenport:                  '14101'
      sslhostnameverificationignored: '1'
+     require:
+        - Wls_machine[Node1]
   'OamServer2':
      ensure:                         'present'
      arguments:
@@ -264,7 +274,8 @@ managed_servers_instances:
      sslenabled:                     '1'
      ssllistenport:                  '14101'
      sslhostnameverificationignored: '1'
-
+     require:
+        - Wls_machine[Node2]
 
 # create cluster and assign the managed servers
 cluster_instances:
@@ -272,14 +283,29 @@ cluster_instances:
     ensure:         'present'
     messagingmode:  'unicast'
     migrationbasis: 'consensus'
-    servers:        'SoaServer1,SoaServer2'
+    servers:
+       - 'SoaServer1'
+       - 'SoaServer2'
+    require:
+       - Wls_server[SoaServer1]
+       - Wls_server[SoaServer2]
   'OimCluster':
     ensure:         'present'
     messagingmode:  'unicast'
     migrationbasis: 'consensus'
-    servers:        'OimServer1,OimServer2'
+    servers:
+       - 'OimServer1'
+       - 'OimServer2'
+    require:
+       - Wls_server[OimServer1]
+       - Wls_server[OimServer2]
   'OamCluster':
     ensure:         'present'
     messagingmode:  'unicast'
     migrationbasis: 'consensus'
-    servers:        'OamServer1,OamServer2'
+    servers:
+       - 'OamServer1'
+       - 'OamServer2'
+    require:
+       - Wls_server[OamServer1]
+       - Wls_server[OamServer2]
