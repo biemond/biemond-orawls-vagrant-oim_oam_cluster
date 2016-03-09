@@ -21,7 +21,6 @@ node 'oim1admin.example.com', 'oimoud.example.com' {
   include fmw_jrf_cluster
   include fmw_log_dir
   include fmw_webtier
-  include fmw_oudconfig
   include fmw_oimconfig
 
   include pack_domain
@@ -399,22 +398,8 @@ class jms{
   create_resources('wls_saf_imported_destination_object',$saf_imported_destination_object_instances, $default_params)
 }
 
-class fmw_cluster{
-  require jms
-  $default_params = {}
-  $fmw_cluster_instances = hiera('fmw_cluster_instances', $default_params)
-  create_resources('orawls::utils::fmwcluster',$fmw_cluster_instances, $default_params)
-}
-
-class fmw_jrf_cluster{
-  require fmw_cluster
-  $default_params = {}
-  $fmw_jrf_cluster_instances = hiera('fmw_jrf_cluster_instances', $default_params)
-  create_resources('orawls::utils::fmwclusterjrf',$fmw_jrf_cluster_instances, $default_params)
-}
-
 class start_managed_wls {
-  require fmw_jrf_cluster
+  require jms
   $default_params = {}
   $control_instances = hiera('control_managed_instances', {})
   create_resources('orawls::control',$control_instances, $default_params)
@@ -425,6 +410,20 @@ class fmw_oimconfig{
   $default_params = {}
   $oimconfig_instances = hiera('oimconfig_instances', $default_params)
   create_resources('orawls::utils::oimconfig',$oimconfig_instances, $default_params)
+}
+
+class fmw_cluster{
+  require fmw_oimconfig
+  $default_params = {}
+  $fmw_cluster_instances = hiera('fmw_cluster_instances', $default_params)
+  create_resources('orawls::utils::fmwcluster',$fmw_cluster_instances, $default_params)
+}
+
+class fmw_jrf_cluster{
+  require fmw_cluster
+  $default_params = {}
+  $fmw_jrf_cluster_instances = hiera('fmw_jrf_cluster_instances', $default_params)
+  create_resources('orawls::utils::fmwclusterjrf',$fmw_jrf_cluster_instances, $default_params)
 }
 
 class fmw_log_dir {
@@ -441,22 +440,8 @@ class fmw_webtier {
   create_resources('orawls::utils::webtier',$webtier_instances, $default_params)
 }
 
-class fmw_oudconfig{
-  require fmw_webtier
-  $default_params = {}
-  $oudconfig_instances = hiera('oudconfig_instances', $default_params)
-  create_resources('orawls::oud::instance',$oudconfig_instances, $default_params)
-}
-
-class fmw_oud_control{
-  require fmw_oudconfig
-  $default_params = {}
-  $oud_control_instances = hiera('oud_control_instances', $default_params)
-  create_resources('orawls::oud::control',$oud_control_instances, $default_params)
-}
-
 class pack_domain{
-  require fmw_oud_control
+  require fmw_webtier
 
   $default_params = {}
   $pack_domain_instances = hiera('pack_domain_instances', $default_params)

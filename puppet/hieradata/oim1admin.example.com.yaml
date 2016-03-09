@@ -91,27 +91,7 @@ control_managed_instances:
      server:               'oim_server1'
      action:               'start'
      log_output:           *logoutput
-  'startWLSOamServer':
-     domain_name:          *domain_name
-     server_type:          'managed'
-     target:               'Server'
-     server:               'oam_server1'
-     action:               'start'
-     log_output:           *logoutput
 
-# fmwlogdir_instances:
-#   'AdminServer':
-#      log_output:      true
-#      server:          *domain_adminserver
-#   'soa_server1':
-#      log_output:      true
-#      server:          'soa_server1'
-#   'oim_server1':
-#      log_output:      true
-#      server:          'oim_server1'
-#   'oam_server1':
-#      log_output:      true
-#      server:          'oam_server1'
 
 # create password file for WLST utility
 userconfig_instances:
@@ -135,10 +115,10 @@ oimconfig_instances:
     repository_password:        "Welcome01"
 
 
-# pack domains
-pack_domain_instances:
-  'wlsDomain':
-    log_output:           *logoutput
+# # pack domains
+# pack_domain_instances:
+#   'wlsDomain':
+#     log_output:           *logoutput
 
 
 # create 2 machines
@@ -309,3 +289,21 @@ cluster_instances:
     require:
        - Wls_server[OamServer1]
        - Wls_server[OamServer2]
+
+
+
+# # fmw cluster
+# fmw_cluster_instances:
+#   'oimCluster':
+#     domain_name:          *domain_name
+#     soa_cluster_name:     "SoaCluster"
+#     oim_cluster_name:     "OimCluster"
+#     oam_cluster_name:     "OamCluster"
+#     log_output:           *logoutput
+#     soa_enabled:          true
+#     oim_enabled:          true
+#     oam_enabled:          true
+#     repository_prefix:    "DEV"
+
+
+
