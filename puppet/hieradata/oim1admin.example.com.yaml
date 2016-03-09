@@ -1,0 +1,285 @@
+---
+
+orawls::weblogic::log_output:   true
+
+wls_os_user:              &wls_os_user              "oracle"
+wls_weblogic_user:        &wls_weblogic_user        "weblogic"
+wls_weblogic_home_dir:    &wls_weblogic_home_dir    "/opt/oracle/middleware11g/wlserver_10.3"
+wls_middleware_home_dir:  &wls_middleware_home_dir  "/opt/oracle/middleware11g"
+
+# when you have just one domain on a server
+domain_name:                &domain_name                "oimDomain"
+domain_adminserver:         &domain_adminserver         "AdminServer"
+domain_adminserver_port:    &domain_adminserver_port    7001
+domain_nodemanager_port:    &domain_nodemanager_port    5556
+domain_wls_password:        &domain_wls_password        "weblogic1"
+
+orautils::os_domain_typeParam: "oim"
+orautils::os_domain:           *domain_name
+orautils::os_domain_path:      "/opt/oracle/wlsdomains/domains/oimDomain"
+orautils::node_mgr_path:       "/opt/oracle/middleware11g/wlserver_10.3/server/bin"
+orautils::node_mgr_address:    '10.10.10.61'
+orautils::wls_password:        *domain_wls_password
+orautils::wls_adminserver:     *domain_adminserver
+
+logoutput:                     &logoutput                     true
+
+# when you have just one domain on a server
+domain_name:                *domain_name
+domain_adminserver:         *domain_adminserver
+domain_adminserver_address: "10.10.10.61"
+domain_adminserver_port:    *domain_adminserver_port
+domain_nodemanager_port:    *domain_nodemanager_port
+domain_wls_password:        *domain_wls_password
+domain_user_config_file:    "/home/oracle/oracle-oimDomain-WebLogicConfig.properties"
+domain_user_key_file:       "/home/oracle/oracle-oimDomain-WebLogicKey.properties"
+
+
+# create a standard domain
+domain_instances:
+  'oimDomain':
+    version:                  1112
+    domain_template:          "oim"
+    development_mode:         true
+    log_output:               *logoutput
+    repository_database_url:  "jdbc:oracle:thin:@oimdb.example.com:1521/oimrepos.example.com"
+    repository_prefix:        "DEV"
+    repository_password:      "Welcome01"
+    repository_sys_password:  "Welcome01"
+    rcu_database_url:         "oimdb.example.com:1521/oimrepos.example.com"
+
+# create and startup the nodemanager
+nodemanager_instances:
+  'nodemanager':
+     nodemanager_address:  "10.10.10.61"
+     log_output:           *logoutput
+
+wls_setting_instances:
+  'default':
+    user:                         *wls_os_user
+    weblogic_home_dir:            *wls_weblogic_home_dir
+    connect_url:                  "t3://%{hiera('domain_adminserver_address')}:7001"
+    weblogic_user:                *wls_weblogic_user
+    weblogic_password:            *domain_wls_password
+    require:                      Orawls::Domain[oimDomain]
+    debug_module:                 true
+    archive_path:                 '/var/tmp/install/default_domain'
+    use_default_value_when_empty: true
+
+# startup adminserver for extra configuration
+control_instances:
+  'startWLSAdminServer':
+     domain_name:          *domain_name
+     server_type:          'admin'
+     target:               'Server'
+     server:               *domain_adminserver
+     action:               'start'
+     log_output:           *logoutput
+
+control_managed_instances:
+  'startWLSSoaServer':
+     domain_name:          *domain_name
+     server_type:          'managed'
+     target:               'Server'
+     server:               'soa_server1'
+     action:               'start'
+     log_output:           *logoutput
+  'startWLSOimServer':
+     domain_name:          *domain_name
+     server_type:          'managed'
+     target:               'Server'
+     server:               'oim_server1'
+     action:               'start'
+     log_output:           *logoutput
+  'startWLSOamServer':
+     domain_name:          *domain_name
+     server_type:          'managed'
+     target:               'Server'
+     server:               'oam_server1'
+     action:               'start'
+     log_output:           *logoutput
+
+# fmwlogdir_instances:
+#   'AdminServer':
+#      log_output:      true
+#      server:          *domain_adminserver
+#   'soa_server1':
+#      log_output:      true
+#      server:          'soa_server1'
+#   'oim_server1':
+#      log_output:      true
+#      server:          'oim_server1'
+#   'oam_server1':
+#      log_output:      true
+#      server:          'oam_server1'
+
+# create password file for WLST utility
+userconfig_instances:
+  'oimDomain':
+     log_output:           *logoutput
+     user_config_dir:      '/home/oracle'
+
+oimconfig_instances:
+  'oimDomain':
+    version:                    1112
+    oim_home:                   '/opt/oracle/middleware11g/Oracle_IDM1'
+    server_config:              true
+    oim_password:               'Welcome01'
+    remote_config:              false
+    keystore_password:          'Welcome01'
+    design_config:              false
+    oimserver_hostname:         'oim1admin.example.com'
+    oimserver_port:             '14000'
+    repository_database_url:    "oimdb.example.com:1521:oimrepos.example.com"
+    repository_prefix:          "DEV"
+    repository_password:        "Welcome01"
+
+
+# pack domains
+pack_domain_instances:
+  'wlsDomain':
+    log_output:           *logoutput
+
+
+# create 2 machines
+machines_instances:
+  'LocalMachine':
+    ensure:         'present'
+    listenaddress:  '10.10.10.61'
+    listenport:     '5556'
+    machinetype:    'UnixMachine'
+    nmtype:         'SSL'
+  'Node1':
+    ensure:         'present'
+    listenaddress:  '10.10.10.62'
+    listenport:     '5556'
+    machinetype:    'UnixMachine'
+    nmtype:         'SSL'
+  'Node2':
+    ensure:         'present'
+    listenaddress:  '10.10.10.62'
+    listenport:     '5556'
+    machinetype:    'UnixMachine'
+    nmtype:         'SSL'
+
+server_vm_args_memory:         &server_vm_args_memory          '-Xms752m'
+server_vm_args_max_memory:     &server_vm_args_max_memory      '-Xmx1024m'
+server_vm_permsize:            &server_vm_permsize             '-XX:PermSize=512m -XX:MaxPermSize=512m'
+tangosol:                      &tangosol                       '-Dtangosol.coherence.wka1=oimnode1.example.com -Dtangosol.coherence.wka2=oimnode2.example.com -Dtangosol.coherence.localport=8089 -Dtangosol.coherence.wka1.port=8089 -Dtangosol.coherence.wka2.port=8089'
+
+managed_servers_instances:
+  'SoaServer1':
+     ensure:                         'present'
+     arguments:
+           - *server_vm_args_memory
+           - *server_vm_args_max_memory
+           - *server_vm_permsize
+           - '-Dweblogic.Stdout=/var/log/weblogic/SoaServer1.out'
+           - '-Dweblogic.Stderr=/var/log/weblogic/SoaServer1_err.out'
+           - *tangosol
+           - '-Dtangosol.coherence.localhost=oimnode1.example.com'
+     listenaddress:                  '10.10.10.62'
+     listenport:                     '8001'
+     logfilename:                    '/var/log/weblogic/SoaServer1.log'
+     machine:                        'Node1'
+     sslenabled:                     '1'
+     ssllistenport:                  '8002'
+     sslhostnameverificationignored: '1'
+  'SoaServer2':
+     ensure:                         'present'
+     arguments:
+           - *server_vm_args_memory
+           - *server_vm_args_max_memory
+           - *server_vm_permsize
+           - '-Dweblogic.Stdout=/var/log/weblogic/SoaServer2.out'
+           - '-Dweblogic.Stderr=/var/log/weblogic/SoaServer2_err.out'
+           - *tangosol
+           - '-Dtangosol.coherence.localhost=oimnode2.example.com'
+     listenaddress:                  '10.10.10.63'
+     listenport:                     '8001'
+     logfilename:                    '/var/log/weblogic/wlsServer2.log'
+     machine:                        'Node2'
+     sslenabled:                     '1'
+     ssllistenport:                  '8002'
+     sslhostnameverificationignored: '1'
+  'OimServer1':
+     ensure:                         'present'
+     arguments:
+           - *server_vm_args_memory
+           - *server_vm_args_max_memory
+           - *server_vm_permsize
+           - '-Dweblogic.Stdout=/var/log/weblogic/OimServer1.out'
+           - '-Dweblogic.Stderr=/var/log/weblogic/OimServer1_err.out'
+     listenaddress:                  '10.10.10.62'
+     listenport:                     '14000'
+     logfilename:                    '/var/log/weblogic/OimServer1.log'
+     machine:                        'Node1'
+     sslenabled:                     '1'
+     ssllistenport:                  '14001'
+     sslhostnameverificationignored: '1'
+  'OimServer2':
+     ensure:                         'present'
+     arguments:
+           - *server_vm_args_memory
+           - *server_vm_args_max_memory
+           - *server_vm_permsize
+           - '-Dweblogic.Stdout=/var/log/weblogic/OimServer2.out'
+           - '-Dweblogic.Stderr=/var/log/weblogic/OimServer2_err.out'
+     listenaddress:                  '10.10.10.63'
+     listenport:                     '14000'
+     logfilename:                    '/var/log/weblogic/OimServer2.log'
+     machine:                        'Node2'
+     sslenabled:                     '1'
+     ssllistenport:                  '14001'
+     sslhostnameverificationignored: '1'
+  'OamServer1':
+     ensure:                         'present'
+     arguments:
+           - *server_vm_args_memory
+           - *server_vm_args_max_memory
+           - *server_vm_permsize
+           - '-Dweblogic.Stdout=/var/log/weblogic/OamServer1.out'
+           - '-Dweblogic.Stderr=/var/log/weblogic/OamServer1_err.out'
+           - '-Dwlspatch=wls_patch1036'
+     listenaddress:                  '10.10.10.62'
+     listenport:                     '14100'
+     logfilename:                    '/var/log/weblogic/OamServer1.log'
+     machine:                        'Node1'
+     sslenabled:                     '1'
+     ssllistenport:                  '14101'
+     sslhostnameverificationignored: '1'
+  'OamServer2':
+     ensure:                         'present'
+     arguments:
+           - *server_vm_args_memory
+           - *server_vm_args_max_memory
+           - *server_vm_permsize
+           - '-Dweblogic.Stdout=/var/log/weblogic/OamServer2.out'
+           - '-Dweblogic.Stderr=/var/log/weblogic/OamServer2_err.out'
+           - '-Dwlspatch=wls_patch1036'
+     listenaddress:                  '10.10.10.63'
+     listenport:                     '14100'
+     logfilename:                    '/var/log/weblogic/OamServer2.log'
+     machine:                        'Node2'
+     sslenabled:                     '1'
+     ssllistenport:                  '14101'
+     sslhostnameverificationignored: '1'
+
+
+# create cluster and assign the managed servers
+cluster_instances:
+  'SoaCluster':
+    ensure:         'present'
+    messagingmode:  'unicast'
+    migrationbasis: 'consensus'
+    servers:        'SoaServer1,SoaServer2'
+  'OimCluster':
+    ensure:         'present'
+    messagingmode:  'unicast'
+    migrationbasis: 'consensus'
+    servers:        'OimServer1,OimServer2'
+  'OamCluster':
+    ensure:         'present'
+    messagingmode:  'unicast'
+    migrationbasis: 'consensus'
+    servers:        'OamServer1,OamServer2'

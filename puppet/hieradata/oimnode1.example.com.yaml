@@ -1,0 +1,48 @@
+---
+
+orawls::weblogic::log_output:   true
+
+wls_os_user:              &wls_os_user              "oracle"
+wls_weblogic_user:        &wls_weblogic_user        "weblogic"
+wls_weblogic_home_dir:    &wls_weblogic_home_dir    "/opt/oracle/middleware11g/wlserver_10.3"
+wls_middleware_home_dir:  &wls_middleware_home_dir  "/opt/oracle/middleware11g"
+
+# when you have just one domain on a server
+domain_name:                &domain_name                "oimDomain"
+domain_adminserver:         &domain_adminserver         "AdminServer"
+domain_adminserver_port:    &domain_adminserver_port    7001
+domain_nodemanager_port:    &domain_nodemanager_port    5556
+domain_wls_password:        &domain_wls_password        "weblogic1"
+
+orautils::os_domain_typeParam: "oim"
+orautils::os_domain:           *domain_name
+orautils::os_domain_path:      "/opt/oracle/wlsdomains/domains/oimDomain"
+orautils::node_mgr_path:       "/opt/oracle/middleware11g/wlserver_10.3/server/bin"
+orautils::node_mgr_address:    '10.10.10.61'
+orautils::wls_password:        *domain_wls_password
+orautils::wls_adminserver:     *domain_adminserver
+
+logoutput:                     &logoutput                     true
+
+# when you have just one domain on a server
+domain_name:                *domain_name
+domain_adminserver:         *domain_adminserver
+domain_adminserver_address: "10.10.10.61"
+domain_adminserver_port:    *domain_adminserver_port
+domain_nodemanager_port:    *domain_nodemanager_port
+domain_wls_password:        *domain_wls_password
+domain_user_config_file:    "/home/oracle/oracle-oimDomain-WebLogicConfig.properties"
+domain_user_key_file:       "/home/oracle/oracle-oimDomain-WebLogicKey.properties"
+
+# copy domains to other nodes
+copy_instances:
+  'wlsDomain':
+     log_output:              *logoutput
+
+
+# create and startup the nodemanager
+nodemanager_instances:
+  'nodemanager':
+     nodemanager_address:  "10.10.10.62"
+     log_output:           *logoutput
+
