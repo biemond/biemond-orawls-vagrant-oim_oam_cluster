@@ -191,7 +191,7 @@ elif oimEnabled:
     # strange for  11.2.0.3
     # assign('AppDeployment', 'TaskDetails'                , 'Target', SOAClusterName)
     assign('AppDeployment', 'usermessagingserver'        , 'Target', SOAClusterName)
-    assign('AppDeployment', 'wsm-pm'                     , 'Target', OIMClusterName)
+    assign('AppDeployment', 'wsm-pm'                     , 'Target', SoaOimCluster)
 elif soaEnabled == true:
     assign('AppDeployment', 'usermessagingdriver-email'  , 'Target', SOAClusterName)
     assign('AppDeployment', 'usermessagingserver'        , 'Target', SOAClusterName)
@@ -266,6 +266,7 @@ if oimEnabled == true:
     assign('AppDeployment', 'ProvCallback', 'Target', OIMClusterName)
     assign('AppDeployment', 'RoleSOD', 'Target', OIMClusterName)
     assign('AppDeployment', 'Reqsvc', 'Target', OIMClusterName)
+    assign('AppDeployment', 'SCIM REST service for OIM', 'Target', OIMClusterName)
 
 if oamEnabled == true:
     assign('AppDeployment', 'oam_server#11.1.2.0.0', 'Target', OAMClusterName)
@@ -432,7 +433,6 @@ if osbEnabled == true:
 
 if oamEnabled == true:
     assign('Library', 'oracle.oaam.libs#11.1.2.0.0@11.1.2.0.0' , 'Target', OAMClusterName)
-    assign('Library', 'oracle.idm.ipf#11.1.2@11.1.2'           , 'Target', OamAdmin)
     # strange 11.2.0. 3
     # assign('Library', 'coherence#3.7.1.1@3.7.1.1'              , 'Target', OamAdmin)
 
@@ -443,6 +443,8 @@ if oimEnabled == true:
     assign('Library', 'oracle.iam.ui.custom#11.1.1@11.1.1'     , 'Target', OIMClusterName)
     assign('Library', 'oracle.grcc.oaacg#8.6.1@8.6.1'          , 'Target', OIMClusterName)
     assign('Library', 'org.bouncycastle.bcprovider#1.1@1.36.0' , 'Target', OIMClusterName)
+    assign('Library', 'oracle.idm.ipf#11.1.2@11.1.2'           , 'Target', SoaOimOamAdmin)
+    assign('Library', 'oracle.idm.msm.ui.library#11.1.2@11.1.2' , 'Target', OIMClusterName)
 
 dumpStack();
 
