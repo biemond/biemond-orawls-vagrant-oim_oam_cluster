@@ -255,8 +255,8 @@ if osbEnabled == true:
     assign('AppDeployment.SubDeployment', 'SFTP Transport Provider.sftp_transport.jar'  , 'Target', OSBClusterName)
 
 if oimEnabled == true:
-    assign('AppDeployment', 'OIMMetadata#11.1.2.0.0', 'Target', OIMClusterName)
-    assign('AppDeployment', 'OIMAppMetadata#11.1.2.0.0', 'Target', OIMClusterName)
+    # assign('AppDeployment', 'OIMMetadata#11.1.2.0.0', 'Target', OIMClusterName)
+    # assign('AppDeployment', 'OIMAppMetadata#11.1.2.0.0', 'Target', OIMClusterName)
     assign('AppDeployment', 'oracle.iam.console.identity.self-service.ear#V2.0', 'Target', OIMClusterName)
     assign('AppDeployment', 'oracle.iam.console.identity.sysadmin.ear#V2.0', 'Target', OIMClusterName)
     assign('AppDeployment', 'oim#11.1.2.0.0', 'Target', OIMClusterName)

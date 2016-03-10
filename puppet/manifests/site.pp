@@ -398,22 +398,8 @@ class jms{
   create_resources('wls_saf_imported_destination_object',$saf_imported_destination_object_instances, $default_params)
 }
 
-class start_managed_wls {
-  require jms
-  $default_params = {}
-  $control_instances = hiera('control_managed_instances', {})
-  create_resources('orawls::control',$control_instances, $default_params)
-}
-
-class fmw_oimconfig{
-  require start_managed_wls
-  $default_params = {}
-  $oimconfig_instances = hiera('oimconfig_instances', $default_params)
-  create_resources('orawls::utils::oimconfig',$oimconfig_instances, $default_params)
-}
-
 class fmw_cluster{
-  require fmw_oimconfig
+  require jms
   $default_params = {}
   $fmw_cluster_instances = hiera('fmw_cluster_instances', $default_params)
   create_resources('orawls::utils::fmwcluster',$fmw_cluster_instances, $default_params)
@@ -424,6 +410,20 @@ class fmw_jrf_cluster{
   $default_params = {}
   $fmw_jrf_cluster_instances = hiera('fmw_jrf_cluster_instances', $default_params)
   create_resources('orawls::utils::fmwclusterjrf',$fmw_jrf_cluster_instances, $default_params)
+}
+
+class start_managed_wls {
+  require fmw_jrf_cluster
+  $default_params = {}
+  $control_instances = hiera('control_managed_instances', {})
+  create_resources('orawls::control',$control_instances, $default_params)
+}
+
+class fmw_oimconfig{
+  require start_managed_wls
+  $default_params = {}
+  $oimconfig_instances = hiera('oimconfig_instances', $default_params)
+  create_resources('orawls::utils::oimconfig',$oimconfig_instances, $default_params)
 }
 
 class fmw_log_dir {

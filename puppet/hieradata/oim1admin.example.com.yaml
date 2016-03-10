@@ -76,49 +76,11 @@ control_instances:
      action:               'start'
      log_output:           *logoutput
 
-control_managed_instances:
-  'startWLSSoaServer':
-     domain_name:          *domain_name
-     server_type:          'managed'
-     target:               'Server'
-     server:               'soa_server1'
-     action:               'start'
-     log_output:           *logoutput
-  'startWLSOimServer':
-     domain_name:          *domain_name
-     server_type:          'managed'
-     target:               'Server'
-     server:               'oim_server1'
-     action:               'start'
-     log_output:           *logoutput
-
-
 # create password file for WLST utility
 userconfig_instances:
   'oimDomain':
      log_output:           *logoutput
      user_config_dir:      '/home/oracle'
-
-oimconfig_instances:
-  'oimDomain':
-    version:                    1112
-    oim_home:                   '/opt/oracle/middleware11g/Oracle_IDM1'
-    server_config:              true
-    oim_password:               'Welcome01'
-    remote_config:              false
-    keystore_password:          'Welcome01'
-    design_config:              false
-    oimserver_hostname:         'oim1admin.example.com'
-    oimserver_port:             '14000'
-    repository_database_url:    "oimdb.example.com:1521:oimrepos.example.com"
-    repository_prefix:          "DEV"
-    repository_password:        "Welcome01"
-
-
-# # pack domains
-# pack_domain_instances:
-#   'wlsDomain':
-#     log_output:           *logoutput
 
 
 # create 2 machines
@@ -145,7 +107,7 @@ machines_instances:
 server_vm_args_memory:         &server_vm_args_memory          '-Xms752m'
 server_vm_args_max_memory:     &server_vm_args_max_memory      '-Xmx1024m'
 server_vm_permsize:            &server_vm_permsize             '-XX:PermSize=512m -XX:MaxPermSize=512m'
-tangosol:                      &tangosol                       '-Dtangosol.coherence.wka1=oimnode1.example.com -Dtangosol.coherence.wka2=oimnode2.example.com -Dtangosol.coherence.localport=8089 -Dtangosol.coherence.wka1.port=8089 -Dtangosol.coherence.wka2.port=8089'
+tangosol:                      &tangosol                       '-Dtangosol.coherence.wka1=oim1admin.example.com -Dtangosol.coherence.wka2=oimnode2.example.com -Dtangosol.coherence.localport=8089 -Dtangosol.coherence.wka1.port=8089 -Dtangosol.coherence.wka2.port=8089'
 
 server_instances:
   'SoaServer1':
@@ -157,16 +119,16 @@ server_instances:
            - '-Dweblogic.Stdout=/var/log/weblogic/SoaServer1.out'
            - '-Dweblogic.Stderr=/var/log/weblogic/SoaServer1_err.out'
            - *tangosol
-           - '-Dtangosol.coherence.localhost=oimnode1.example.com'
-     listenaddress:                  '10.10.10.62'
+           - '-Dtangosol.coherence.localhost=oim1admin.example.com'
+     listenaddress:                  '10.10.10.61'
      listenport:                     '8001'
      logfilename:                    '/var/log/weblogic/SoaServer1.log'
-     machine:                        'Node1'
+     machine:                        'LocalMachine'
      sslenabled:                     '1'
      ssllistenport:                  '8002'
      sslhostnameverificationignored: '1'
      require:
-        - Wls_machine[Node1]
+        - Wls_machine[LocalMachine]
   'SoaServer2':
      ensure:                         'present'
      arguments:
@@ -194,15 +156,15 @@ server_instances:
            - *server_vm_permsize
            - '-Dweblogic.Stdout=/var/log/weblogic/OimServer1.out'
            - '-Dweblogic.Stderr=/var/log/weblogic/OimServer1_err.out'
-     listenaddress:                  '10.10.10.62'
+     listenaddress:                  '10.10.10.61'
      listenport:                     '14000'
      logfilename:                    '/var/log/weblogic/OimServer1.log'
-     machine:                        'Node1'
+     machine:                        'LocalMachine'
      sslenabled:                     '1'
      ssllistenport:                  '14001'
      sslhostnameverificationignored: '1'
      require:
-        - Wls_machine[Node1]
+        - Wls_machine[LocalMachine]
   'OimServer2':
      ensure:                         'present'
      arguments:
@@ -262,7 +224,7 @@ cluster_instances:
   'SoaCluster':
     ensure:         'present'
     messagingmode:  'unicast'
-    migrationbasis: 'consensus'
+    migrationbasis: 'database'
     servers:
        - 'SoaServer1'
        - 'SoaServer2'
@@ -272,7 +234,7 @@ cluster_instances:
   'OimCluster':
     ensure:         'present'
     messagingmode:  'unicast'
-    migrationbasis: 'consensus'
+    migrationbasis: 'database'
     servers:
        - 'OimServer1'
        - 'OimServer2'
@@ -282,7 +244,7 @@ cluster_instances:
   'OamCluster':
     ensure:         'present'
     messagingmode:  'unicast'
-    migrationbasis: 'consensus'
+    migrationbasis: 'database'
     servers:
        - 'OamServer1'
        - 'OamServer2'
@@ -290,20 +252,53 @@ cluster_instances:
        - Wls_server[OamServer1]
        - Wls_server[OamServer2]
 
+# fmw cluster
+fmw_cluster_instances:
+  'oimCluster':
+    domain_name:          *domain_name
+    soa_cluster_name:     "SoaCluster"
+    oim_cluster_name:     "OimCluster"
+    oam_cluster_name:     "OamCluster"
+    log_output:           *logoutput
+    soa_enabled:          true
+    oim_enabled:          true
+    oam_enabled:          true
+    repository_prefix:    "DEV"
+
+control_managed_instances:
+  'startWLSSoaServer':
+     domain_name:          *domain_name
+     server_type:          'managed'
+     target:               'Server'
+     server:               'SoaServer1'
+     action:               'start'
+     log_output:           *logoutput
+  'startWLSOimServer':
+     domain_name:          *domain_name
+     server_type:          'managed'
+     target:               'Server'
+     server:               'OimServer1'
+     action:               'start'
+     log_output:           *logoutput
 
 
-# # fmw cluster
-# fmw_cluster_instances:
-#   'oimCluster':
-#     domain_name:          *domain_name
-#     soa_cluster_name:     "SoaCluster"
-#     oim_cluster_name:     "OimCluster"
-#     oam_cluster_name:     "OamCluster"
+# oimconfig_instances:
+#   'oimDomain':
+#     version:                    1112
+#     oim_home:                   '/opt/oracle/middleware11g/Oracle_IDM1'
+#     server_config:              true
+#     oim_password:               'Welcome01'
+#     remote_config:              false
+#     keystore_password:          'Welcome01'
+#     design_config:              false
+#     oimserver_hostname:         'oim1admin.example.com'
+#     oimserver_port:             '14000'
+#     repository_database_url:    "oimdb.example.com:1521:oimrepos.example.com"
+#     repository_prefix:          "DEV"
+#     repository_password:        "Welcome01"
+
+# # pack domains
+# pack_domain_instances:
+#   'wlsDomain':
 #     log_output:           *logoutput
-#     soa_enabled:          true
-#     oim_enabled:          true
-#     oam_enabled:          true
-#     repository_prefix:    "DEV"
-
-
 
