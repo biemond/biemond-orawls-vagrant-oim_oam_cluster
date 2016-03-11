@@ -99,13 +99,13 @@ machines_instances:
     nmtype:         'SSL'
   'Node2':
     ensure:         'present'
-    listenaddress:  '10.10.10.62'
+    listenaddress:  '10.10.10.63'
     listenport:     '5556'
     machinetype:    'UnixMachine'
     nmtype:         'SSL'
 
 server_vm_args_memory:         &server_vm_args_memory          '-Xms752m'
-server_vm_args_max_memory:     &server_vm_args_max_memory      '-Xmx1024m'
+server_vm_args_max_memory:     &server_vm_args_max_memory      '-Xmx2048m'
 server_vm_permsize:            &server_vm_permsize             '-XX:PermSize=512m -XX:MaxPermSize=512m'
 tangosol:                      &tangosol                       '-Dtangosol.coherence.wka1=oim1admin.example.com -Dtangosol.coherence.wka2=oimnode2.example.com -Dtangosol.coherence.localport=8089 -Dtangosol.coherence.wka1.port=8089 -Dtangosol.coherence.wka2.port=8089'
 
@@ -265,21 +265,21 @@ fmw_cluster_instances:
     oam_enabled:          true
     repository_prefix:    "DEV"
 
-control_managed_instances:
-  'startWLSSoaServer':
-     domain_name:          *domain_name
-     server_type:          'managed'
-     target:               'Server'
-     server:               'SoaServer1'
-     action:               'start'
-     log_output:           *logoutput
-  'startWLSOimServer':
-     domain_name:          *domain_name
-     server_type:          'managed'
-     target:               'Server'
-     server:               'OimServer1'
-     action:               'start'
-     log_output:           *logoutput
+# control_managed_instances:
+#   'startWLSSoaServer':
+#      domain_name:          *domain_name
+#      server_type:          'managed'
+#      target:               'Server'
+#      server:               'SoaServer1'
+#      action:               'start'
+#      log_output:           *logoutput
+#   'startWLSOimServer':
+#      domain_name:          *domain_name
+#      server_type:          'managed'
+#      target:               'Server'
+#      server:               'OimServer1'
+#      action:               'start'
+#      log_output:           *logoutput
 
 
 # oimconfig_instances:
@@ -297,8 +297,8 @@ control_managed_instances:
 #     repository_prefix:          "DEV"
 #     repository_password:        "Welcome01"
 
-# # pack domains
-# pack_domain_instances:
-#   'wlsDomain':
-#     log_output:           *logoutput
+# pack domains
+pack_domain_instances:
+  'wlsDomain':
+    log_output:           *logoutput
 

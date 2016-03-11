@@ -489,10 +489,10 @@ if oamEnabled == true:
 
 if oimEnabled == true:
     assign('JdbcSystemResource', 'oimOperationsDB'     , 'Target', OIMClusterName)
-    assign('JdbcSystemResource', 'mds-oim'             , 'Target', OIMClusterName)
+    assign('JdbcSystemResource', 'mds-oim'             , 'Target', OimAdmin)
     assign('JdbcSystemResource', 'oimJMSStoreDS'       , 'Target', OIMClusterName)
     assign('JdbcSystemResource', 'ApplicationDB'       , 'Target', OIMClusterName)
-
+    assign('JdbcSystemResource', 'soaOIMLookupDB'      , 'Target', SOAClusterName)
 
 if bamEnabled == true:
     assign('JdbcSystemResource', 'BAMDataSource'       , 'Target', BAMClusterName)
