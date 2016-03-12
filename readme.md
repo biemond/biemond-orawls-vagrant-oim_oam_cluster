@@ -36,6 +36,11 @@ Vagrant boxes
 
 ### WebLogic Server
 - oim1admin 10.10.10.61 port 7001 weblogic/weblogic1, WebLogic 10.3.6 with OIM,OAM,SOA Suite
+- http://10.10.10.61:14000/oim/faces/faces/pages/Admin.jspx with xelsysadm/Welcome01
+- http://10.10.10.61:14000/admin/faces/pages/Admin.jspx
+- http://10.10.10.61:8001/soa-infra with weblogic/weblogic1
+- http://10.10.10.61:8001/integration/worklistapp with weblogic/weblogic1
+- http://10.10.10.62:14100/oamconsole
 
 ## Software
 
