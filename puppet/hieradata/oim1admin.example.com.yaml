@@ -105,7 +105,7 @@ machines_instances:
     nmtype:         'SSL'
 
 server_vm_args_memory:         &server_vm_args_memory          '-Xms752m'
-server_vm_args_max_memory:     &server_vm_args_max_memory      '-Xmx2048m'
+server_vm_args_max_memory:     &server_vm_args_max_memory      '-Xmx1024m'
 server_vm_permsize:            &server_vm_permsize             '-XX:PermSize=512m -XX:MaxPermSize=512m'
 tangosol:                      &tangosol                       '-Dtangosol.coherence.wka1=oim1admin.example.com -Dtangosol.coherence.wka2=oimnode2.example.com -Dtangosol.coherence.localport=8089 -Dtangosol.coherence.wka1.port=8089 -Dtangosol.coherence.wka2.port=8089'
 

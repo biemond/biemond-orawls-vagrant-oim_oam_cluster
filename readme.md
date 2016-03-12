@@ -2,7 +2,6 @@
 
 Oracle access & identity manager 11.1.2.3
 
-
 ##Details
 - OEL 6.6 vagrant box
 - Puppet 3.8
@@ -11,7 +10,7 @@ Oracle access & identity manager 11.1.2.3
 
 Add all the Oracle binaries to the vagrant folder or make links to these files inside this folder
 
-Or pptional edit the Vagrantfile and add the software share plus update all puppet files ( change /vagrant to /software )
+Or optional edit the Vagrantfile and add the software share plus update all puppet files ( change /vagrant to /software )
 - oim1admin.vm.synced_folder "/Users/edwin/software", "/software"
 - oimdb.vm.synced_folder "/Users/edwin/software", "/software"
 - oimoud.vm.synced_folder "/Users/edwin/software", "/software"
@@ -22,7 +21,7 @@ Vagrant boxes
 - vagrant up oimnode1
 - vagrant up oimnode2
 
-## Databases
+##Databases
 - oimdb 10.10.10.9, 11.2.0.4 met OIM/OAM RCU
 
 ### software
@@ -34,15 +33,29 @@ Vagrant boxes
 
 ## OIM/OAM Middleware
 
-### WebLogic Server
+###Remarks
+- OimServer1 & SoaServer1 should be on the adminserver node, because of 1time provisioning.
+
+###Uris
 - oim1admin 10.10.10.61 port 7001 weblogic/weblogic1, WebLogic 10.3.6 with OIM,OAM,SOA Suite
 - http://10.10.10.61:14000/oim/faces/faces/pages/Admin.jspx with xelsysadm/Welcome01
 - http://10.10.10.61:14000/admin/faces/pages/Admin.jspx
 - http://10.10.10.61:8001/soa-infra with weblogic/weblogic1
 - http://10.10.10.61:8001/integration/worklistapp with weblogic/weblogic1
-- http://10.10.10.62:14100/oamconsole
 
-## Software
+###OAM cluster configuration
+- http://10.10.10.61:7001/oamconsole
+- Go to Configuration -> Servers -> Search
+	- Duplicate oim_server1 to OamServer1,OamServer2 and change the hostname
+	- Delete oim_server1
+- Sync oam-config.xml to all nodes
+	- logon oim1admin as oracle ( sudo su - oracle )
+	- scp -oStrictHostKeyChecking=no -oCheckHostIP=no /opt/oracle/wlsdomains/domains/oimDomain/config/fmwconfig/oam-config.xml oracle@oimnode1.example.com:/opt/oracle/wlsdomains/domains/oimDomain/config/fmwconfig/oam-config.xml
+	- scp -oStrictHostKeyChecking=no -oCheckHostIP=no /opt/oracle/wlsdomains/domains/oimDomain/config/fmwconfig/oam-config.xml oracle@oimnode2.example.com:/opt/oracle/wlsdomains/domains/oimDomain/config/fmwconfig/oam-config.xml
+- Restart the AdminServer
+- Start or Restart OamCluster
+
+### Software
 
 ### JDK
 - UnlimitedJCEPolicyJDK7.zip

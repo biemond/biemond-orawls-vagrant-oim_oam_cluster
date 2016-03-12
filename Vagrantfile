@@ -26,11 +26,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     oim1admin.vm.provider :vmware_fusion do |vb|
       vb.vmx["numvcpus"] = "2"
-      vb.vmx["memsize"] = "5548"
+      vb.vmx["memsize"] = "4500"
     end
 
     oim1admin.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "5548"]
+      vb.customize ["modifyvm", :id, "--memory", "4500"]
       vb.customize ["modifyvm", :id, "--name"  , "oim1admin"]
       vb.customize ["modifyvm", :id, "--cpus"  , 2]
     end
@@ -72,11 +72,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     oimnode1.vm.provider :vmware_fusion do |vb|
       vb.vmx["numvcpus"] = "2"
-      vb.vmx["memsize"] = "3548"
+      vb.vmx["memsize"] = "2500"
     end
 
     oimnode1.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "3548"]
+      vb.customize ["modifyvm", :id, "--memory", "2500"]
       vb.customize ["modifyvm", :id, "--name"  , "oimnode1"]
       vb.customize ["modifyvm", :id, "--cpus"  , 2]
     end
@@ -118,11 +118,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     oimnode2.vm.provider :vmware_fusion do |vb|
       vb.vmx["numvcpus"] = "2"
-      vb.vmx["memsize"] = "3548"
+      vb.vmx["memsize"] = "2500"
     end
 
     oimnode2.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "3548"]
+      vb.customize ["modifyvm", :id, "--memory", "2500"]
       vb.customize ["modifyvm", :id, "--name"  , "oimnode2"]
       vb.customize ["modifyvm", :id, "--cpus"  , 2]
     end
