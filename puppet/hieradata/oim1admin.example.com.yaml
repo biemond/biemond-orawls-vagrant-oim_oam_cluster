@@ -252,18 +252,18 @@ cluster_instances:
        - Wls_server[OamServer1]
        - Wls_server[OamServer2]
 
-# fmw cluster
-fmw_cluster_instances:
-  'oimCluster':
-    domain_name:          *domain_name
-    soa_cluster_name:     "SoaCluster"
-    oim_cluster_name:     "OimCluster"
-    oam_cluster_name:     "OamCluster"
-    log_output:           *logoutput
-    soa_enabled:          true
-    oim_enabled:          true
-    oam_enabled:          true
-    repository_prefix:    "DEV"
+# # fmw cluster
+# fmw_cluster_instances:
+#   'oimCluster':
+#     domain_name:          *domain_name
+#     soa_cluster_name:     "SoaCluster"
+#     oim_cluster_name:     "OimCluster"
+#     oam_cluster_name:     "OamCluster"
+#     log_output:           *logoutput
+#     soa_enabled:          true
+#     oim_enabled:          true
+#     oam_enabled:          true
+#     repository_prefix:    "DEV"
 
 # control_managed_instances:
 #   'startWLSSoaServer':
@@ -281,7 +281,6 @@ fmw_cluster_instances:
 #      action:               'start'
 #      log_output:           *logoutput
 
-
 # oimconfig_instances:
 #   'oimDomain':
 #     version:                    1112
@@ -293,12 +292,14 @@ fmw_cluster_instances:
 #     design_config:              false
 #     oimserver_hostname:         'oim1admin.example.com'
 #     oimserver_port:             '14000'
+#     soaserver_name:             'SoaServer1'
+#     oimserver_name:             'OimServer1'
 #     repository_database_url:    "oimdb.example.com:1521:oimrepos.example.com"
 #     repository_prefix:          "DEV"
 #     repository_password:        "Welcome01"
 
-# pack domains
-pack_domain_instances:
-  'wlsDomain':
-    log_output:           *logoutput
+# # pack domains
+# pack_domain_instances:
+#   'wlsDomain':
+#     log_output:           *logoutput
 
