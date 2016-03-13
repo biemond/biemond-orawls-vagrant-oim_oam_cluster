@@ -92,14 +92,20 @@ opatch_instances:
     patch_file:               "p22469374_111190_Generic.zip"
     log_output:               true
     remote_file:              false
-  '22085274':
+  '21771609':
     ensure:                   'present'
     oracle_product_home_dir:  '/opt/oracle/middleware11g/Oracle_IDM1'
-    patch_id:                 "22085274"
-    patch_file:               "p22085274_111230_Generic.zip"
+    patch_id:                 "21771609"
+    patch_file:               "p21771609_111230_Generic.zip"
     log_output:               true
     remote_file:              false
-
+  '21869176':
+    ensure:                   'present'
+    oracle_product_home_dir:  '/opt/oracle/middleware11g/Oracle_IDM1'
+    patch_id:                 "21869176"
+    patch_file:               "p21869176_111230_Generic.zip"
+    log_output:               true
+    remote_file:              false
 
 # handy WebLogic scripts in /opt/scripts/wls
 orautils::os_oracle_home:      *wls_oracle_base_home_dir

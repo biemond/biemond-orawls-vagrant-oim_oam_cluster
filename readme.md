@@ -75,5 +75,5 @@ Vagrant boxes
 - V75849-01_2of2.zip soa suite 11.1.1.9.0 from edelivery
 
 ### FMW Patches
-- Oracle SOA Suite
-- Oracle IDM suite
+- Oracle SOA Suite p22469374_111190_Generic.zip
+- Oracle IDM suite p21771609_111230_Generic.zip,  p21869176_111230_Generic.zip
