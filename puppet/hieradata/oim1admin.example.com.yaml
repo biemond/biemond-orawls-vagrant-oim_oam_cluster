@@ -218,6 +218,40 @@ server_instances:
      sslhostnameverificationignored: '1'
      require:
         - Wls_machine[Node2]
+  'BiServer1':
+     ensure:                         'present'
+     arguments:
+           - *server_vm_args_memory
+           - *server_vm_args_max_memory
+           - *server_vm_permsize
+           - '-Dweblogic.Stdout=/var/log/weblogic/BiServer1.out'
+           - '-Dweblogic.Stderr=/var/log/weblogic/BiServer1_err.out'
+     listenaddress:                  '10.10.10.61'
+     listenport:                     '14000'
+     logfilename:                    '/var/log/weblogic/BiServer1.log'
+     machine:                        'LocalMachine'
+     sslenabled:                     '1'
+     ssllistenport:                  '14001'
+     sslhostnameverificationignored: '1'
+     require:
+        - Wls_machine[LocalMachine]
+  'BiServer2':
+     ensure:                         'present'
+     arguments:
+           - *server_vm_args_memory
+           - *server_vm_args_max_memory
+           - *server_vm_permsize
+           - '-Dweblogic.Stdout=/var/log/weblogic/BiServer2.out'
+           - '-Dweblogic.Stderr=/var/log/weblogic/BiServer2_err.out'
+     listenaddress:                  '10.10.10.63'
+     listenport:                     '14000'
+     logfilename:                    '/var/log/weblogic/BiServer2.log'
+     machine:                        'Node2'
+     sslenabled:                     '1'
+     ssllistenport:                  '14001'
+     sslhostnameverificationignored: '1'
+     require:
+        - Wls_machine[Node2]
 
 # create cluster and assign the managed servers
 cluster_instances:
@@ -251,6 +285,17 @@ cluster_instances:
     require:
        - Wls_server[OamServer1]
        - Wls_server[OamServer2]
+  'BiCluster':
+    ensure:         'present'
+    messagingmode:  'unicast'
+    migrationbasis: 'database'
+    servers:
+       - 'BiServer1'
+       - 'BiServer2'
+    require:
+       - Wls_server[BiServer1]
+       - Wls_server[BiServer2]
+
 
 # fmw cluster
 fmw_cluster_instances:

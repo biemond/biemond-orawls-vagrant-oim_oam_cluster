@@ -62,9 +62,9 @@ orawls::weblogic::wls_apps_dir:         *wls_apps_dir
 
 # patches for WebLogic 10.3.6
 bsu_instances:
-  'YUIS':
-    patch_id:                "YUIS"
-    patch_file:              "p20181997_1036_Generic.zip"
+  'S8C2':
+    patch_id:                "S8C2"
+    patch_file:              "p21984589_1036_Generic.zip"
     log_output:              true
     remote_file:             false
 
@@ -85,6 +85,20 @@ fmw_installations:
     remote_file:             false
 
 opatch_instances:
+  '22469374':
+    ensure:                   'present'
+    oracle_product_home_dir:  '/opt/oracle/middleware11g/Oracle_SOA1'
+    patch_id:                 "22469374"
+    patch_file:               "p22469374_111190_Generic.zip"
+    log_output:               true
+    remote_file:              false
+  '22085274':
+    ensure:                   'present'
+    oracle_product_home_dir:  '/opt/oracle/middleware11g/Oracle_IDM1'
+    patch_id:                 "22085274"
+    patch_file:               "p22085274_111230_Generic.zip"
+    log_output:               true
+    remote_file:              false
 
 
 # handy WebLogic scripts in /opt/scripts/wls

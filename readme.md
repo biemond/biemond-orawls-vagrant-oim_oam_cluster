@@ -65,7 +65,7 @@ Vagrant boxes
 - wls1036_generic.jar
 
 ### BSU patch
-- p20181997_1036_Generic.zip
+- S8C2 p21984589_1036_Generic.zip
 
 ### FMW
 - ofm_iam_generic_11.1.2.3.0_disk1_1of3.zip
@@ -74,3 +74,6 @@ Vagrant boxes
 - V75849-01_1of2.zip soa suite 11.1.1.9.0 from edelivery
 - V75849-01_2of2.zip soa suite 11.1.1.9.0 from edelivery
 
+### FMW Patches
+- Oracle SOA Suite
+- Oracle IDM suite
