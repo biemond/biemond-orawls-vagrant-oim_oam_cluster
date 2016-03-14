@@ -227,7 +227,7 @@ server_instances:
            - *server_vm_permsize
            - '-Dweblogic.Stdout=/var/log/weblogic/BiServer1.out'
            - '-Dweblogic.Stderr=/var/log/weblogic/BiServer1_err.out'
-     listenaddress:                  '10.10.10.61'
+     listenaddress:                  '10.10.10.62'
      listenport:                     '9704'
      logfilename:                    '/var/log/weblogic/BiServer1.log'
      machine:                        'Node1'

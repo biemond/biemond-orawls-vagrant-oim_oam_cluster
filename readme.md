@@ -44,7 +44,7 @@ Vagrant boxes
 - http://10.10.10.61:8001/integration/worklistapp with weblogic/weblogic1
 
 ###OAM cluster configuration
-- http://10.10.10.61:7001/oamconsole
+- http://10.10.10.62:7001/oamconsole
 - Go to Configuration -> Servers -> Search
 	- Duplicate oim_server1 to OamServer1,OamServer2 and change the hostname
 	- Delete oim_server1
@@ -54,6 +54,16 @@ Vagrant boxes
 	- scp -oStrictHostKeyChecking=no -oCheckHostIP=no /opt/oracle/wlsdomains/domains/oimDomain/config/fmwconfig/oam-config.xml oracle@oimnode2.example.com:/opt/oracle/wlsdomains/domains/oimDomain/config/fmwconfig/oam-config.xml
 - Restart the AdminServer
 - Start or Restart OamCluster
+
+###BI cluster configuration
+- http://10.10.10.62:9704/xmlpserver with xelsysadm/Welcome01
+- http://10.10.10.63:9704/xmlpserver with xelsysadm/Welcome01
+	- BI publisher app -> administration -> system maintenance -> Server configuration
+		Server configuration
+			-> Configuration Folder -> shared location ( should be matching on all BI servers)
+		Schedular configuration
+			-> JMS Configuration -> WebLogic JNDI URL -> cluster:t3://BiCluster
+
 
 ### Software
 
