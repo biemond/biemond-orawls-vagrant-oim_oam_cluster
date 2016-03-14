@@ -227,11 +227,11 @@ server_instances:
            - '-Dweblogic.Stdout=/var/log/weblogic/BiServer1.out'
            - '-Dweblogic.Stderr=/var/log/weblogic/BiServer1_err.out'
      listenaddress:                  '10.10.10.61'
-     listenport:                     '9704'
+     listenport:                     '9804'
      logfilename:                    '/var/log/weblogic/BiServer1.log'
      machine:                        'LocalMachine'
      sslenabled:                     '1'
-     ssllistenport:                  '9705'
+     ssllistenport:                  '9805'
      sslhostnameverificationignored: '1'
      require:
         - Wls_machine[LocalMachine]
@@ -244,11 +244,11 @@ server_instances:
            - '-Dweblogic.Stdout=/var/log/weblogic/BiServer2.out'
            - '-Dweblogic.Stderr=/var/log/weblogic/BiServer2_err.out'
      listenaddress:                  '10.10.10.63'
-     listenport:                     '9704'
+     listenport:                     '9804'
      logfilename:                    '/var/log/weblogic/BiServer2.log'
      machine:                        'Node2'
      sslenabled:                     '1'
-     ssllistenport:                  '9705'
+     ssllistenport:                  '9805'
      sslhostnameverificationignored: '1'
      require:
         - Wls_machine[Node2]
@@ -303,12 +303,12 @@ fmw_cluster_instances:
     soa_cluster_name:     "SoaCluster"
     oim_cluster_name:     "OimCluster"
     oam_cluster_name:     "OamCluster"
-    bi_cluster_name:      "BiCluster"
+    # bi_cluster_name:      "BiCluster"
     log_output:           *logoutput
     soa_enabled:          true
     oim_enabled:          true
     oam_enabled:          true
-    bi_enabled:           true
+    # bi_enabled:           true
     repository_prefix:    "DEV"
 
 control_managed_instances:
@@ -326,6 +326,7 @@ control_managed_instances:
      server:               'OimServer1'
      action:               'start'
      log_output:           *logoutput
+     require:              Orawls::Control[startWLSSoaServer]
 
 oimconfig_instances:
   'oimDomain':
