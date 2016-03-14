@@ -231,7 +231,7 @@ server_instances:
      logfilename:                    '/var/log/weblogic/BiServer1.log'
      machine:                        'LocalMachine'
      sslenabled:                     '1'
-     ssllistenport:                  '14001'
+     ssllistenport:                  '9705'
      sslhostnameverificationignored: '1'
      require:
         - Wls_machine[LocalMachine]
@@ -248,7 +248,7 @@ server_instances:
      logfilename:                    '/var/log/weblogic/BiServer2.log'
      machine:                        'Node2'
      sslenabled:                     '1'
-     ssllistenport:                  '14001'
+     ssllistenport:                  '9705'
      sslhostnameverificationignored: '1'
      require:
         - Wls_machine[Node2]
@@ -296,7 +296,6 @@ cluster_instances:
        - Wls_server[BiServer1]
        - Wls_server[BiServer2]
 
-
 # fmw cluster
 fmw_cluster_instances:
   'oimCluster':
@@ -304,10 +303,12 @@ fmw_cluster_instances:
     soa_cluster_name:     "SoaCluster"
     oim_cluster_name:     "OimCluster"
     oam_cluster_name:     "OamCluster"
+    bi_cluster_name:      "BiCluster"
     log_output:           *logoutput
     soa_enabled:          true
     oim_enabled:          true
     oam_enabled:          true
+    bi_enabled:           true
     repository_prefix:    "DEV"
 
 control_managed_instances:
