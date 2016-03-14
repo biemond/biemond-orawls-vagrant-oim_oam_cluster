@@ -34,6 +34,7 @@ domain_wls_password:        *domain_wls_password
 domain_user_config_file:    "/home/oracle/oracle-oimDomain-WebLogicConfig.properties"
 domain_user_key_file:       "/home/oracle/oracle-oimDomain-WebLogicKey.properties"
 
+rcu_prefix:                 &rcu_prefix 'DEV2'
 
 # create a standard domain
 domain_instances:
@@ -43,7 +44,7 @@ domain_instances:
     development_mode:         true
     log_output:               *logoutput
     repository_database_url:  "jdbc:oracle:thin:@oimdb.example.com:1521/oimrepos.example.com"
-    repository_prefix:        "DEV"
+    repository_prefix:        *rcu_prefix
     repository_password:      "Welcome01"
     repository_sys_password:  "Welcome01"
     rcu_database_url:         "oimdb.example.com:1521/oimrepos.example.com"
@@ -227,14 +228,14 @@ server_instances:
            - '-Dweblogic.Stdout=/var/log/weblogic/BiServer1.out'
            - '-Dweblogic.Stderr=/var/log/weblogic/BiServer1_err.out'
      listenaddress:                  '10.10.10.61'
-     listenport:                     '9804'
+     listenport:                     '9704'
      logfilename:                    '/var/log/weblogic/BiServer1.log'
-     machine:                        'LocalMachine'
+     machine:                        'Node1'
      sslenabled:                     '1'
-     ssllistenport:                  '9805'
+     ssllistenport:                  '9705'
      sslhostnameverificationignored: '1'
      require:
-        - Wls_machine[LocalMachine]
+        - Wls_machine[Node1]
   'BiServer2':
      ensure:                         'present'
      arguments:
@@ -244,11 +245,11 @@ server_instances:
            - '-Dweblogic.Stdout=/var/log/weblogic/BiServer2.out'
            - '-Dweblogic.Stderr=/var/log/weblogic/BiServer2_err.out'
      listenaddress:                  '10.10.10.63'
-     listenport:                     '9804'
+     listenport:                     '9704'
      logfilename:                    '/var/log/weblogic/BiServer2.log'
      machine:                        'Node2'
      sslenabled:                     '1'
-     ssllistenport:                  '9805'
+     ssllistenport:                  '9705'
      sslhostnameverificationignored: '1'
      require:
         - Wls_machine[Node2]
@@ -303,13 +304,13 @@ fmw_cluster_instances:
     soa_cluster_name:     "SoaCluster"
     oim_cluster_name:     "OimCluster"
     oam_cluster_name:     "OamCluster"
-    # bi_cluster_name:      "BiCluster"
+    bi_cluster_name:      "BiCluster"
     log_output:           *logoutput
     soa_enabled:          true
     oim_enabled:          true
     oam_enabled:          true
-    # bi_enabled:           true
-    repository_prefix:    "DEV"
+    bi_enabled:           true
+    repository_prefix:    *rcu_prefix
 
 control_managed_instances:
   'startWLSSoaServer':
@@ -334,6 +335,8 @@ oimconfig_instances:
     oim_home:                   '/opt/oracle/middleware11g/Oracle_IDM1'
     server_config:              true
     oim_password:               'Welcome01'
+    bi_cluster_name:            'BiCluster'
+    bi_enabled:                 true
     remote_config:              false
     keystore_password:          'Welcome01'
     design_config:              false
@@ -342,7 +345,7 @@ oimconfig_instances:
     soaserver_name:             'SoaServer1'
     oimserver_name:             'OimServer1'
     repository_database_url:    "oimdb.example.com:1521:oimrepos.example.com"
-    repository_prefix:          "DEV"
+    repository_prefix:          *rcu_prefix
     repository_password:        "Welcome01"
 
 # pack domains
