@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-jms xmlns="http://xmlns.oracle.com/weblogic/weblogic-jms">
+  <connection-factory name="BIP.JMS.CF">
+    <default-targeting-enabled>true</default-targeting-enabled>
+    <jndi-name>BIP.JMS.CF</jndi-name>
+    <client-params>
+      <reconnect-policy>all</reconnect-policy>
+      <reconnect-blocking-millis>60000</reconnect-blocking-millis>
+      <total-reconnect-period-millis>-1</total-reconnect-period-millis>
+    </client-params>
+  </connection-factory>
+</weblogic-jms>
