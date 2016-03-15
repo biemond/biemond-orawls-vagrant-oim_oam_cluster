@@ -41,7 +41,7 @@ domain_instances:
   'oimDomain':
     version:                  1112
     domain_template:          "oim"
-    development_mode:         true
+    development_mode:         false
     log_output:               *logoutput
     repository_database_url:  "jdbc:oracle:thin:@oimdb.example.com:1521/oimrepos.example.com"
     repository_prefix:        *rcu_prefix

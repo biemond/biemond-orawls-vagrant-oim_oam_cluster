@@ -44,7 +44,7 @@ Vagrant boxes
 - http://10.10.10.61:8001/integration/worklistapp with weblogic/weblogic1
 
 ###OAM cluster configuration
-- http://10.10.10.62:7001/oamconsole
+- http://10.10.10.61:7001/oamconsole
 - Go to Configuration -> Servers -> Search
 	- Duplicate oim_server1 to OamServer1,OamServer2 and change the hostname
 	- Delete oim_server1
@@ -56,6 +56,7 @@ Vagrant boxes
 - Start or Restart OamCluster
 
 ###BI cluster configuration
+- Copy DOMAIN/config/bipublisher/repository to a shared drive
 - http://10.10.10.62:9704/xmlpserver with xelsysadm/Welcome01
 - http://10.10.10.63:9704/xmlpserver with xelsysadm/Welcome01
 	- BI publisher app -> administration -> system maintenance -> Server configuration
@@ -64,26 +65,25 @@ Vagrant boxes
 		Schedular configuration
 			-> JMS Configuration -> WebLogic JNDI URL -> cluster:t3://BiCluster
 
-
 ### Software
 
-### JDK
+#### JDK
 - UnlimitedJCEPolicyJDK7.zip
 - jdk-7u80-linux-x64.tar.gz
 
-### WebLogic
+#### WebLogic
 - wls1036_generic.jar
 
-### BSU patch
+#### BSU patch
 - S8C2 p21984589_1036_Generic.zip
 
-### FMW
+#### FMW
 - ofm_iam_generic_11.1.2.3.0_disk1_1of3.zip
 - ofm_iam_generic_11.1.2.3.0_disk1_2of3.zip
 - ofm_iam_generic_11.1.2.3.0_disk1_3of3.zip
 - V75849-01_1of2.zip soa suite 11.1.1.9.0 from edelivery
 - V75849-01_2of2.zip soa suite 11.1.1.9.0 from edelivery
 
-### FMW Patches
+#### FMW Patches
 - Oracle SOA Suite p22469374_111190_Generic.zip
 - Oracle IDM suite p21771609_111230_Generic.zip,  p21869176_111230_Generic.zip
