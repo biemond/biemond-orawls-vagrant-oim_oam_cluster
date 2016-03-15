@@ -40,6 +40,15 @@ copy_instances:
      log_output:              *logoutput
 
 
+file_persistence_folders:
+   '/opt/oracle/wlsdomains/domains/oimDomain/servers/BiServer1/data/store/BipJmsStore1':
+      ensure:     directory
+      recurse:    false
+      replace:    false
+      mode:       '0775'
+      owner:      'oracle'
+      group:      'dba'
+
 # create and startup the nodemanager
 nodemanager_instances:
   'nodemanager':

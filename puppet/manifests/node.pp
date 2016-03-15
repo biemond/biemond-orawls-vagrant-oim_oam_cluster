@@ -193,8 +193,18 @@ class copydomain {
   create_resources('orawls::copydomain',$copy_instances, $default_params)
 }
 
-class nodemanager {
+class file_persistence{
   require copydomain
+
+  $default_params = {}
+
+  $file_persistence_folders = hiera('file_persistence_folders', {})
+  create_resources('file',$file_persistence_folders, $default_params)
+
+}
+
+class nodemanager {
+  require file_persistence
   $default_params = {}
   $nodemanager_instances = hiera('nodemanager_instances', {})
   create_resources('orawls::nodemanager',$nodemanager_instances, $default_params)
