@@ -34,7 +34,7 @@ domain_wls_password:        *domain_wls_password
 domain_user_config_file:    "/home/oracle/oracle-oimDomain-WebLogicConfig.properties"
 domain_user_key_file:       "/home/oracle/oracle-oimDomain-WebLogicKey.properties"
 
-rcu_prefix:                 &rcu_prefix 'DEV2'
+rcu_prefix:                 &rcu_prefix 'DEV'
 
 # create a standard domain
 domain_instances:
