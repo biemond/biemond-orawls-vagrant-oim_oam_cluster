@@ -84,14 +84,15 @@ fmw_installations:
     log_output:              true
     remote_file:             false
 
+# somehow with patch 22469374 soa-infra won't start
 opatch_instances:
-  '22469374':
-    ensure:                   'present'
-    oracle_product_home_dir:  '/opt/oracle/middleware11g/Oracle_SOA1'
-    patch_id:                 "22469374"
-    patch_file:               "p22469374_111190_Generic.zip"
-    log_output:               true
-    remote_file:              false
+  # '22469374':
+  #   ensure:                   'present'
+  #   oracle_product_home_dir:  '/opt/oracle/middleware11g/Oracle_SOA1'
+  #   patch_id:                 "22469374"
+  #   patch_file:               "p22469374_111190_Generic.zip"
+  #   log_output:               true
+  #   remote_file:              false
   '21771609':
     ensure:                   'present'
     oracle_product_home_dir:  '/opt/oracle/middleware11g/Oracle_IDM1'
