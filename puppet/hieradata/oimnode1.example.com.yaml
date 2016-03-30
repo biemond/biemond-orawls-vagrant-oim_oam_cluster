@@ -41,6 +41,21 @@ copy_instances:
 
 
 file_persistence_folders:
+   '/opt/oracle/wlsdomains/domains/oimDomain/servers/BiServer1/data':
+      ensure:     directory
+      recurse:    false
+      replace:    false
+      mode:       '0775'
+      owner:      'oracle'
+      group:      'dba'
+   '/opt/oracle/wlsdomains/domains/oimDomain/servers/BiServer1/data/store':
+      ensure:     directory
+      recurse:    false
+      replace:    false
+      mode:       '0775'
+      owner:      'oracle'
+      group:      'dba'
+      require:    File[/opt/oracle/wlsdomains/domains/oimDomain/servers/BiServer1/data]
    '/opt/oracle/wlsdomains/domains/oimDomain/servers/BiServer1/data/store/BipJmsStore1':
       ensure:     directory
       recurse:    false
@@ -48,6 +63,8 @@ file_persistence_folders:
       mode:       '0775'
       owner:      'oracle'
       group:      'dba'
+      require:    File[/opt/oracle/wlsdomains/domains/oimDomain/servers/BiServer1/data/store]
+
 
 # create and startup the nodemanager
 nodemanager_instances:
